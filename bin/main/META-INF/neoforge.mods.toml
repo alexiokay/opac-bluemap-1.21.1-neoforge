@@ -1,0 +1,40 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="opac_bluemap_integration"
+version="${version}"
+displayName="OpenPaC BlueMap Integration"
+authors="Gaming32, DreamyLynn"
+description='''
+Syncs your Open Parties and Claims land claims to your BlueMap maps
+'''
+
+[[dependencies.opac_bluemap_integration]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.22)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.opac_bluemap_integration]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.0,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.opac_bluemap_integration]]
+modId="openpartiesandclaims"
+type="required"
+versionRange="[0.23.0,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.opac_bluemap_integration]]
+modId="bluemap"
+type="required"
+versionRange="[5.0.0,)"
+ordering="NONE"
+side="BOTH"

@@ -1,6 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
-    id 'io.github.juuxel.loom-quiltflower' version '1.8.0'
+    id 'net.neoforged.moddev' version '1.0.21'
     id 'maven-publish'
 }
 
@@ -14,11 +13,9 @@ repositories {
     }
 
     maven {
-        name = "Fuzs Mod Resources"
-        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases/'
     }
-
-    maven { url = "https://maven.quiltmc.org/repository/release" }
 
     exclusiveContent {
         forRepository {
@@ -33,39 +30,34 @@ repositories {
     }
 
     maven { url 'https://repo.bluecolored.de/releases' }
+}
 
-    maven { url = "https://jitpack.io" }
+neoForge {
+    version = project.neoforge_version
+    
+    parchment {
+        minecraftVersion = project.minecraft_version
+        mappingsVersion = "2024.11.17"
+    }
 }
 
 dependencies {
-    // To change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings(loom.layered {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.21:2024.07.28@zip")
-    })
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    // OpenPaC for NeoForge - using latest NeoForge version compatible with 1.21.1
+    implementation("maven.modrinth:open-parties-and-claims:neoforge-1.21.1-0.25.4")
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    // BlueMap API
+    compileOnly("de.bluecolored:bluemap-api:2.7.3")
+    runtimeOnly("maven.modrinth:bluemap:5.7-neoforge-1.21")
 
-    modImplementation("maven.modrinth:open-parties-and-claims:fabric-1.21-0.23.1")
-    modRuntimeOnly("fuzs.forgeconfigapiport:forgeconfigapiport-fabric:8.0.0") {
-        exclude(group: "net.fabricmc")
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-
-    implementation(de.bluecolored:bluemap-api:2.7.3")
-    modRuntimeOnly("maven.modrinth:bluemap:5.2-fabric-1.21")
-
-    include(implementation("org.quiltmc.qup:json:0.2.0"))
+    // JSON library equivalent for NeoForge - using Gson which is already in Minecraft
+    // No need for separate JSON library as Minecraft has Gson
 }
 
 processResources {
     inputs.property "version", project.version
     filteringCharset "UTF-8"
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/neoforge.mods.toml") {
         expand "version": project.version
     }
 }
@@ -95,6 +87,7 @@ java {
 }
 
 jar {
+    archiveBaseName = "server-${project.archives_base_name}"
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
     }
